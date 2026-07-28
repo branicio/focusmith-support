@@ -12,18 +12,41 @@ Support website for the [Focusmith](https://apps.apple.com/app/focusmith) iOS ap
 
 ## Languages
 
-Every page carries English, Brazilian Portuguese and Spanish in full, stacked on the
-same URL and navigated by anchor:
+Every page carries English, Brazilian Portuguese and Spanish. The **EN / PT / ES**
+tabs in the header switch the whole page — one language is visible at a time.
 
-| Language | Anchor |
-|---|---|
-| English | `#top` |
-| Português (Brasil) | `#portugues` |
-| Español | `#espanol` |
+| Language | Fragment | Section |
+|---|---|---|
+| English | `#top` | `<section data-lang="en">` |
+| Português (Brasil) | `#portugues` | `<section data-lang="pt">` |
+| Español | `#espanol` | `<section data-lang="es">` |
 
-One canonical URL per document — App Store Connect takes a single privacy policy URL,
-and the app deep-links a language with a fragment (`privacy.html#portugues`) rather than
-resolving a different path. See `Constants.swift` in the app repo.
+Still one canonical URL per document — App Store Connect takes a single privacy policy
+URL — and the app deep-links a language with a fragment (`privacy.html#portugues`) from
+Settings. On first visit with no fragment, `navigator.language` picks the language.
+
+### How it degrades
+
+`styles.css` only hides a language when `<html data-js="on">` is present, and `site.js`
+sets that attribute on its very first line. If the script fails to load or parse, the
+attribute is never set and **all three languages render stacked** — the readable state
+this design falls back to. The script's `try/catch` then *removes* the attribute if setup
+fails partway, withdrawing the stylesheet's permission to hide anything.
+
+That makes "no language visible" structurally impossible, which matters when the content
+being hidden is a privacy policy.
+
+### Editing
+
+Pages are generated, not hand-edited. Markup supplies only `data-lang` on each section and
+`role="tab"` + `data-lang-target` on each control; `site.js` stamps every ARIA attribute
+(`role="tabpanel"`, ids, `aria-controls`, `aria-selected`, `aria-hidden`, roving tabindex)
+at load, so the relationships cannot drift.
+
+Shared chrome outside the language sections — nav links, footer — is translated with
+`data-i18n-en` / `-pt` / `-es` attributes. The authored text is captured as the baseline,
+so an element with no `data-i18n-es` falls back to English rather than keeping stale
+Portuguese.
 
 ## Contact
 
