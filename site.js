@@ -14,8 +14,29 @@
     var HASH = { portugues: "pt", espanol: "es", top: "en" };
     var LANG_ATTR = { en: "en", pt: "pt-BR", es: "es" };
 
+    var STORE_KEY = "focusmith-support-lang";
+    var FRAG = { en: "#top", pt: "#portugues", es: "#espanol" };
+
     var sections = Array.prototype.slice.call(document.querySelectorAll("[data-lang]"));
     var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+
+    // Same-page links to the site's other documents. These get the active language's
+    // fragment appended so the choice survives navigation even when storage is
+    // unavailable — and so a copied link carries the language with it.
+    var pageLinks = Array.prototype.slice.call(document.querySelectorAll("a[href]"))
+      .filter(function (a) {
+        return /^[\w-]+\.html(#.*)?$/.test(a.getAttribute("href") || "");
+      });
+
+    // Storage gets its own try/catch. A SecurityError here (Safari private browsing,
+    // cookies blocked, file://) must cost only persistence — not take down the whole
+    // switcher by falling into the outer catch, which would unhide all three languages.
+    function readStored() {
+      try { return window.localStorage.getItem(STORE_KEY); } catch (e) { return null; }
+    }
+    function writeStored(lang) {
+      try { window.localStorage.setItem(STORE_KEY, lang); } catch (e) { /* links still carry it */ }
+    }
 
     // ---- one-time structural wiring ------------------------------------------------
     // The markup only supplies `data-lang` on each section and `role="tab"` +
@@ -42,9 +63,15 @@
     var i18nEls = Array.prototype.slice.call(document.querySelectorAll("[data-i18n-en]"));
     i18nEls.forEach(function (el) { el.dataset.i18nBaseline = el.textContent; });
 
+    // Order matters. An explicit fragment wins so a shared or app-supplied link always
+    // shows the language it names, even if this browser previously chose another. A
+    // remembered choice then beats the browser's own language, because a reader who
+    // picked Português on an English-locale machine meant it.
     function pick() {
       var h = (location.hash || "").replace("#", "").toLowerCase();
       if (HASH[h]) return HASH[h];
+      var stored = readStored();
+      if (stored && FRAG[stored]) return stored;
       var n = (navigator.language || "en").toLowerCase();
       if (n.indexOf("pt") === 0) return "pt";
       if (n.indexOf("es") === 0) return "es";
@@ -92,8 +119,16 @@
 
       document.documentElement.lang = LANG_ATTR[lang] || lang;
 
+      // Carry the language across navigation. Two independent mechanisms, because
+      // either one alone has a hole: storage is unavailable in private browsing, and
+      // fragments are lost if a reader edits the URL or follows a link from elsewhere.
+      var frag = FRAG[lang] || "#top";
+      pageLinks.forEach(function (a) {
+        a.setAttribute("href", (a.getAttribute("href") || "").split("#")[0] + frag);
+      });
+
       if (updateHash) {
-        var frag = lang === "pt" ? "#portugues" : lang === "es" ? "#espanol" : "#top";
+        writeStored(lang);
         // replaceState, not a hash assignment: switching language should not fill the
         // back button with one entry per tap, and should not scroll the page.
         history.replaceState(null, "", frag);

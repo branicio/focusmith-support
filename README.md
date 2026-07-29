@@ -23,7 +23,20 @@ tabs in the header switch the whole page — one language is visible at a time.
 
 Still one canonical URL per document — App Store Connect takes a single privacy policy
 URL — and the app deep-links a language with a fragment (`privacy.html#portugues`) from
-Settings. On first visit with no fragment, `navigator.language` picks the language.
+Settings.
+
+The choice survives navigation between pages, by two independent means:
+
+1. An explicit tab click is remembered in `localStorage`.
+2. Every internal page link is rewritten to carry the active language's fragment, so a
+   copied link keeps its language and the choice holds even where storage is blocked
+   (Safari private browsing, cookies disabled).
+
+Resolution order on load is **fragment → stored choice → `navigator.language` → English**.
+A fragment wins so a shared or app-supplied link always shows the language it names; a
+stored choice beats the browser locale because someone who picked Português on an
+English-locale machine meant it. A fragment-driven load does *not* overwrite the stored
+choice — only an explicit tab click does.
 
 ### How it degrades
 
