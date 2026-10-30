@@ -265,6 +265,14 @@
     border-radius:2px;background:var(--flame);
   }
   .langtabs [role="tab"]:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
+  /* Five tabs plus the brand overflow a phone-width header at desktop spacing. */
+  @media(max-width:480px){
+    .nav{padding-left:16px;padding-right:16px}
+    .langtabs [role="tab"]{padding:6px 8px}
+  }
+  @media(max-width:360px){
+    .brand b{display:none}
+  }
 
   .skip-link{
     position:absolute;left:-9999px;top:0;z-index:100;
