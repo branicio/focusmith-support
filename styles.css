@@ -276,7 +276,7 @@
   /* ---------- Language visibility ---------- */
   /* Only ever hide a language once the script has confirmed it is running. With JS
      off — or if site.js fails before finishing setup, in which case it removes this
-     attribute again — all three render stacked, which is a readable page rather than
+     attribute again — every language renders stacked, which is a readable page rather than
      a blank one. That matters when the hidden content is a privacy policy. */
   html[data-js="on"] [data-lang]:not([data-lang-active]){display:none}
 

@@ -1,6 +1,6 @@
 (function () {
   // Set FIRST. styles.css only hides a language once this attribute is present, so a
-  // script error before this line (a parse failure, say) degrades to all three languages
+  // script error before this line (a parse failure, say) degrades to every language
   // shown stacked — never to none. Everything after it runs inside the try/catch below,
   // whose catch removes this very attribute: it is what authorises the stylesheet to hide
   // a [data-lang] section, so a setup failure must withdraw that authorisation rather than
@@ -9,13 +9,13 @@
   document.documentElement.dataset.js = "on";
 
   try {
-    // The app deep-links privacy.html#portugues / #espanol from Settings, so those
-    // fragments have to keep selecting a language.
-    var HASH = { portugues: "pt", espanol: "es", top: "en" };
-    var LANG_ATTR = { en: "en", pt: "pt-BR", es: "es" };
+    // The app deep-links privacy.html#portugues / #espanol / #francais / #italiano from
+    // Settings, so those fragments have to keep selecting a language.
+    var HASH = { portugues: "pt", espanol: "es", francais: "fr", italiano: "it", top: "en" };
+    var LANG_ATTR = { en: "en", pt: "pt-BR", es: "es", fr: "fr", it: "it" };
 
     var STORE_KEY = "focusmith-support-lang";
-    var FRAG = { en: "#top", pt: "#portugues", es: "#espanol" };
+    var FRAG = { en: "#top", pt: "#portugues", es: "#espanol", fr: "#francais", it: "#italiano" };
 
     var sections = Array.prototype.slice.call(document.querySelectorAll("[data-lang]"));
     var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
@@ -30,7 +30,7 @@
 
     // Storage gets its own try/catch. A SecurityError here (Safari private browsing,
     // cookies blocked, file://) must cost only persistence — not take down the whole
-    // switcher by falling into the outer catch, which would unhide all three languages.
+    // switcher by falling into the outer catch, which would unhide every language.
     function readStored() {
       try { return window.localStorage.getItem(STORE_KEY); } catch (e) { return null; }
     }
@@ -75,6 +75,8 @@
       var n = (navigator.language || "en").toLowerCase();
       if (n.indexOf("pt") === 0) return "pt";
       if (n.indexOf("es") === 0) return "es";
+      if (n.indexOf("fr") === 0) return "fr";
+      if (n.indexOf("it") === 0) return "it";
       return "en";
     }
 
@@ -152,7 +154,7 @@
 
   } catch (err) {
     // Setup did not complete, so withdraw the permission data-js grants the stylesheet
-    // to hide content. Without it the no-JS branch takes over and all three languages
+    // to hide content. Without it the no-JS branch takes over and every language
     // render stacked — the same known-good degraded state as a script that never ran.
     // Never rethrow past this point.
     document.documentElement.removeAttribute("data-js");
