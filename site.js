@@ -86,6 +86,9 @@
     // sections" impossible.
     function resolveLang(lang) {
       var i;
+      // A page with no language sections (impressum.html shows every language at once)
+      // still translates its nav and footer and carries the choice on to other pages.
+      if (!sections.length) return FRAG[lang] ? lang : "en";
       for (i = 0; i < sections.length; i++) {
         if (sections[i].dataset.lang === lang) return lang;
       }

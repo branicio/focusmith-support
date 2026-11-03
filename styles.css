@@ -211,6 +211,11 @@
   .doc a{color:var(--crimson-lift);text-decoration:underline;text-underline-offset:2px;
     text-decoration-color:rgba(255,61,99,.50)}
   .doc a:hover{text-decoration-color:var(--crimson-lift)}
+  /* impressum.html: several languages stacked in one .doc, each opening with its own h1. */
+  .doc h1{font-family:var(--display);font-weight:700;letter-spacing:-.02em;line-height:1.1;
+    font-size:clamp(1.6rem,4vw,2.1rem);color:var(--ink);margin:0 0 14px}
+  .doc section{padding:0}
+  .doc section + section{margin-top:34px;padding-top:30px;border-top:1px solid var(--hair-2)}
   .callout{
     border-radius:14px;padding:20px 22px;margin:22px 0;
     border-left:4px solid var(--green);background:rgba(76,175,80,.10);
