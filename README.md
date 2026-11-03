@@ -12,9 +12,9 @@ Support website for the [Focusmith](https://apps.apple.com/app/focusmith) app (i
 
 ## Languages
 
-Every page carries English, Brazilian Portuguese, Spanish, French and Italian. The
-**EN / PT / ES / FR / IT** tabs in the header switch the whole page — one language is
-visible at a time.
+Every page carries English, Brazilian Portuguese, Spanish, French, Italian and German.
+The **EN / PT / ES / FR / IT / DE** tabs in the header switch the whole page — one
+language is visible at a time.
 
 | Language | Fragment | Section |
 |---|---|---|
@@ -23,6 +23,7 @@ visible at a time.
 | Español | `#espanol` | `<section data-lang="es">` |
 | Français | `#francais` | `<section data-lang="fr">` |
 | Italiano | `#italiano` | `<section data-lang="it">` |
+| Deutsch | `#deutsch` | `<section data-lang="de">` |
 
 Still one canonical URL per document — App Store Connect takes a single privacy policy
 URL — and the app deep-links a language with a fragment (`privacy.html#portugues`) from
@@ -60,7 +61,7 @@ Pages are generated, not hand-edited. Markup supplies only `data-lang` on each s
 at load, so the relationships cannot drift.
 
 Shared chrome outside the language sections — nav links, footer — is translated with
-`data-i18n-en` / `-pt` / `-es` / `-fr` / `-it` attributes. The authored text is captured as the baseline,
+`data-i18n-en` / `-pt` / `-es` / `-fr` / `-it` / `-de` attributes. The authored text is captured as the baseline,
 so an element with no `data-i18n-es` falls back to English rather than keeping stale
 Portuguese.
 

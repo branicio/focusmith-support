@@ -9,13 +9,13 @@
   document.documentElement.dataset.js = "on";
 
   try {
-    // The app deep-links privacy.html#portugues / #espanol / #francais / #italiano from
-    // Settings, so those fragments have to keep selecting a language.
-    var HASH = { portugues: "pt", espanol: "es", francais: "fr", italiano: "it", top: "en" };
-    var LANG_ATTR = { en: "en", pt: "pt-BR", es: "es", fr: "fr", it: "it" };
+    // The app deep-links privacy.html#portugues / #espanol / #francais / #italiano /
+    // #deutsch from Settings, so those fragments have to keep selecting a language.
+    var HASH = { portugues: "pt", espanol: "es", francais: "fr", italiano: "it", deutsch: "de", top: "en" };
+    var LANG_ATTR = { en: "en", pt: "pt-BR", es: "es", fr: "fr", it: "it", de: "de" };
 
     var STORE_KEY = "focusmith-support-lang";
-    var FRAG = { en: "#top", pt: "#portugues", es: "#espanol", fr: "#francais", it: "#italiano" };
+    var FRAG = { en: "#top", pt: "#portugues", es: "#espanol", fr: "#francais", it: "#italiano", de: "#deutsch" };
 
     var sections = Array.prototype.slice.call(document.querySelectorAll("[data-lang]"));
     var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
@@ -77,6 +77,7 @@
       if (n.indexOf("es") === 0) return "es";
       if (n.indexOf("fr") === 0) return "fr";
       if (n.indexOf("it") === 0) return "it";
+      if (n.indexOf("de") === 0) return "de";
       return "en";
     }
 
