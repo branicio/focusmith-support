@@ -9,7 +9,7 @@ Support website for the [Focusmith](https://apps.apple.com/app/focusmith) app (i
 | **Support Home** | https://branicio.github.io/focusmith-support/ |
 | **Privacy Policy** | https://branicio.github.io/focusmith-support/privacy.html |
 | **Terms of Use** | https://branicio.github.io/focusmith-support/terms.html |
-| **Impressum / Legal notice** (static, every language on one page) | https://branicio.github.io/focusmith-support/impressum.html |
+| **Impressum / Legal notice** (one section per language, switched by the language bar like the other pages; all stacked without JS) | https://branicio.github.io/focusmith-support/impressum.html |
 
 Fonts (Outfit, Inter) are self-hosted in `fonts/` (`fonts.css` + woff2, OFL in `LICENSES.txt`); no page loads anything from Google.
 
